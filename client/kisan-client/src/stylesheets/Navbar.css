@@ -1,0 +1,36 @@
+/* Logo container */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  min-width: 220px; /* ✅ Wider container for logo + text */
+}
+
+/* Logo image */
+.logo-img {
+  height: 100px; /* ✅ Scales up the logo */
+  width: auto;
+  object-fit: cover;
+  border-radius: 50%; /* ✅ Keeps circular crop clean */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Optional polish */
+}
+
+/* Logo text */
+.logo-text {
+  font-size: 22px;
+  font-weight: 600;
+  font-family: 'Marcellus', sans-serif;
+  color: var(--accent-color); /* ✅ Matches your theme */
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .logo-img {
+    height: 50px;
+  }
+
+  .logo-text {
+    font-size: 18px;
+  }
+}

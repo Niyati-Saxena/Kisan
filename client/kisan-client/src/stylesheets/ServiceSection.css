@@ -1,0 +1,10 @@
+.service-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.service-link:hover {
+  transform: scale(1.02);
+}

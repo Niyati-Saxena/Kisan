@@ -1,0 +1,28 @@
+.about.section {
+  padding-top: 10px;
+  background-color: var(--surface-color); /* use your soft gray */
+
+}
+
+.about .section-title h2 {
+  color: var(--accent-color);
+  font-size: 20px;
+  font-family: 'Marcellus', sans-serif;
+}
+
+.about-content {
+  max-width: 800px;
+  margin: 0 auto 0px auto;
+  background-color: white;
+  padding: 20px 30px;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  font-family: 'Marcellus', sans-serif;
+  font-size: 17px;
+  color: black;
+  line-height: 1.6;
+  
+  
+
+}

@@ -1,0 +1,60 @@
+/* .why-choose.section {
+  padding-top: 100px;
+  background-color: #085508;
+  color: white;
+  position: relative;
+  z-index: 0;
+} */
+
+.why-choose.section {
+  background-color: #085532;
+  color: white;
+  padding: 100px 0; /* Equal top and bottom padding */
+  display: flex;
+  align-items: center; /* ✅ Vertically center content */
+  min-height: 100vh; /* Optional: full screen height */
+}
+
+.why-choose .row {
+  width: 100%;
+  display: flex;
+  align-items: center; /* ✅ Vertically center row content */
+}
+
+.why-choose .img-fluid {
+  margin-top: -100px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Left-align text */
+.col-lg-6 {
+  text-align: left;
+  max-width: 500px;
+}
+
+/* Headings and paragraph alignment */
+.section-subtitle,
+.section-title,
+.section-description,
+.feature-item h4,
+.feature-item p {
+   
+  text-align: left;
+  color : white;
+}
+
+/* Icon styling */
+.feature-icon {
+  font-size: 28px;
+  color: white; /* ✅ White icons */
+  margin-top: 4px;
+}
+
+/* Feature item layout: icon on left */
+.feature-item {
+  display: flex;
+  flex-direction: row; /* ✅ icon on left, text on right */
+  align-items: flex-start;
+  gap: 15px;
+}

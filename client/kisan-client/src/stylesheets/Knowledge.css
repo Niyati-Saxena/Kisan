@@ -1,0 +1,46 @@
+.knowledge.section {
+  padding-top: 10px;
+}
+
+.knowledge .section-title h2 {
+  color: var(--accent-color);
+  font-size: 20px;
+  font-family: 'Marcellus' , sans-serif;
+}
+
+.knowledge-subsection {
+  margin-top: 40px;
+}
+
+.knowledge-subsection h3 {
+  color: var(--accent-color);
+  font-size: 30px;
+  margin-bottom: 20px;
+  font-family: 'Marcellus', sans-serif;
+}
+
+.knowledge-subsection ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.knowledge-subsection li {
+  background-color: white;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  border-radius: 8px;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  font-family: 'Marcellus', sans-serif;
+}
+
+.knowledge-subsection li strong {
+  font-size: 20px;
+  color: var(--default-color);
+}
+
+.knowledge-subsection li p {
+  font-size: 16px;
+  color: #333;
+  margin-top: 5px;
+}
