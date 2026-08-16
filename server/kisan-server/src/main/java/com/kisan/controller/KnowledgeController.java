@@ -2,9 +2,8 @@ package com.kisan.controller;
 
 import com.kisan.model.Disease;
 import com.kisan.model.Skill;
-import com.kisan.repository.DiseaseRepository;
-import com.kisan.repository.SkillRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kisan.service.DiseaseService;
+import com.kisan.service.SkillService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,31 +15,35 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 public class KnowledgeController {
 
-    @Autowired
-    private DiseaseRepository diseaseRepo;
+    private DiseaseService diseaseService;
+    private SkillService skillService;
 
-    @Autowired
-    private SkillRepository skillRepo;
+    public KnowledgeController(DiseaseService diseaseService , SkillService skillService) {
+        this.diseaseService = diseaseService;
+        this.skillService = skillService;
+    }
 
     @GetMapping("/diseases")
-    public List<Disease> getDiseases() {
-        return diseaseRepo.findAll();
+    public ResponseEntity<List<Disease>> getDiseases() {
+        List<Disease> allDiseases = diseaseService.getAllDiseases();
+        return ResponseEntity.status(HttpStatus.OK).body(allDiseases);
     }
 
     @GetMapping("/skills")
-    public List<Skill> getSkills() {
-        return skillRepo.findAll();
+    public ResponseEntity<List<Skill>> getSkills() {
+        List<Skill> allSkills = skillService.getAllSkills();
+        return ResponseEntity.status(HttpStatus.OK).body(allSkills);
     }
 
     @PostMapping("/diseases")
     public ResponseEntity<Disease> addDisease(@RequestBody Disease disease) {
-        Disease newDisease = diseaseRepo.save(disease);
+        Disease newDisease = diseaseService.saveDisease(disease);
         return ResponseEntity.status(HttpStatus.CREATED).body(newDisease);
     }
 
     @PostMapping("/skills")
     public ResponseEntity<Skill> addSkill(@RequestBody Skill skill) {
-        Skill newSkill = skillRepo.save(skill);
+        Skill newSkill = skillService.saveSkill(skill);
         return ResponseEntity.status(HttpStatus.CREATED).body(newSkill);
     }
 }
