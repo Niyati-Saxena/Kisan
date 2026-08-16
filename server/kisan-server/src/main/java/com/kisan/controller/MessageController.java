@@ -3,6 +3,8 @@ package com.kisan.controller;
 import com.kisan.model.Message;
 import com.kisan.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +23,8 @@ public class MessageController {
     }
 
     @PostMapping
-    public Message sendMessage(@RequestBody Message message) {
-        return repo.save(message);
+    public ResponseEntity<Message> sendMessage(@RequestBody Message message) {
+        Message newMessage = repo.save(message);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newMessage);
     }
 }

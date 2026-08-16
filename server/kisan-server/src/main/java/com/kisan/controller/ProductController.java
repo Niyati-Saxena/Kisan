@@ -3,6 +3,8 @@ package com.kisan.controller;
 import com.kisan.model.Product;
 import com.kisan.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,12 +23,14 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product addProduct(@RequestBody Product product) {
-        return productService.saveProduct(product);
+    public ResponseEntity<Product> addProduct(@RequestBody Product product) {
+        Product newProduct = productService.saveProduct(product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+         productService.deleteProduct(id);
+         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

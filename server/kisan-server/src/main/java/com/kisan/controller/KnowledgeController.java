@@ -5,6 +5,8 @@ import com.kisan.model.Skill;
 import com.kisan.repository.DiseaseRepository;
 import com.kisan.repository.SkillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,12 +33,14 @@ public class KnowledgeController {
     }
 
     @PostMapping("/diseases")
-    public Disease addDisease(@RequestBody Disease disease) {
-        return diseaseRepo.save(disease);
+    public ResponseEntity<Disease> addDisease(@RequestBody Disease disease) {
+        Disease newDisease = diseaseRepo.save(disease);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newDisease);
     }
 
     @PostMapping("/skills")
-    public Skill addSkill(@RequestBody Skill skill) {
-        return skillRepo.save(skill);
+    public ResponseEntity<Skill> addSkill(@RequestBody Skill skill) {
+        Skill newSkill = skillRepo.save(skill);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newSkill);
     }
 }

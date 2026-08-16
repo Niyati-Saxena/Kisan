@@ -3,6 +3,8 @@ package com.kisan.controller;
 import com.kisan.model.Transporter;
 import com.kisan.repository.TransporterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +23,8 @@ public class TransporterController {
     }
 
     @PostMapping
-    public Transporter addTransporter(@RequestBody Transporter transporter) {
-        return repo.save(transporter);
+    public ResponseEntity<Transporter> addTransporter(@RequestBody Transporter transporter) {
+        Transporter newTransporter = repo.save(transporter);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newTransporter);
     }
 }
