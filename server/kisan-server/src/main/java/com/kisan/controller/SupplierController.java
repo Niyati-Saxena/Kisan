@@ -1,7 +1,9 @@
 package com.kisan.controller;
 
-import com.kisan.model.Supplier;
+import com.kisan.dto.SupplierRequestDTO;
+import com.kisan.dto.SupplierResponseDTO;
 import com.kisan.service.SupplierService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +22,14 @@ public class SupplierController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Supplier>> getAllSuppliers() {
-        List<Supplier> allSupplier = supplierService.getAllSuppliers();
-        return ResponseEntity.ok(allSupplier);
+    public ResponseEntity<List<SupplierResponseDTO>> getAllSuppliers() {
+        List<SupplierResponseDTO> allSuppliers = supplierService.getAllSuppliers();
+        return ResponseEntity.ok(allSuppliers);
     }
 
     @PostMapping
-    public ResponseEntity<Supplier> addSupplier(@RequestBody Supplier supplier) {
-        Supplier newSupplier = supplierService.saveSupplier(supplier);
+    public ResponseEntity<SupplierResponseDTO> addSupplier(@RequestBody @Valid SupplierRequestDTO request) {
+        SupplierResponseDTO newSupplier = supplierService.saveSupplier(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(newSupplier);
     }
 }
