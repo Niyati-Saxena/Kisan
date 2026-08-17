@@ -1,8 +1,7 @@
 package com.kisan.controller;
 
 import com.kisan.model.Message;
-import com.kisan.repository.MessageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kisan.service.MessageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,17 +13,21 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 public class MessageController {
 
-    @Autowired
-    private MessageRepository repo;
+    private final MessageService messageService;
+
+    public MessageController(MessageService messageService) {
+        this.messageService = messageService;
+    }
 
     @GetMapping
-    public List<Message> getAll() {
-        return repo.findAll();
+    public ResponseEntity<List<Message>> getAll() {
+        List<Message> allMessages = messageService.getAllMessages();
+        return ResponseEntity.status(HttpStatus.OK).body(allMessages);
     }
 
     @PostMapping
     public ResponseEntity<Message> sendMessage(@RequestBody Message message) {
-        Message newMessage = repo.save(message);
+        Message newMessage = messageService.saveMessage(message);
         return ResponseEntity.status(HttpStatus.CREATED).body(newMessage);
     }
 }
