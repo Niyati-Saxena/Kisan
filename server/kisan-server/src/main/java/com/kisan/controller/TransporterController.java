@@ -1,8 +1,7 @@
 package com.kisan.controller;
 
 import com.kisan.model.Transporter;
-import com.kisan.repository.TransporterRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kisan.service.TransporterService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,17 +13,21 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 public class TransporterController {
 
-    @Autowired
-    private TransporterRepository repo;
+    private final TransporterService transporterService;
+
+    public TransporterController(TransporterService transporterService) {
+        this.transporterService = transporterService;
+    }
 
     @GetMapping
-    public List<Transporter> getAll() {
-        return repo.findAll();
+    public ResponseEntity<List<Transporter>> getAllTransporters() {
+        List<Transporter> allTransporters = transporterService.getAllTransporters();
+        return ResponseEntity.ok(allTransporters);
     }
 
     @PostMapping
     public ResponseEntity<Transporter> addTransporter(@RequestBody Transporter transporter) {
-        Transporter newTransporter = repo.save(transporter);
+        Transporter newTransporter = transporterService.saveTransporter(transporter);
         return ResponseEntity.status(HttpStatus.CREATED).body(newTransporter);
     }
 }
