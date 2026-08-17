@@ -2,8 +2,7 @@
 package com.kisan.controller;
 
 import com.kisan.model.Registration;
-import com.kisan.repository.RegistrationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kisan.service.RegistrationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +12,15 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*") // Allow frontend access
 public class RegistrationController {
 
-    @Autowired
-    private RegistrationRepository registrationRepository;
+    private final RegistrationService registrationService;
+
+    public RegistrationController(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
 
     @PostMapping
     public ResponseEntity<String> registerUser(@RequestBody Registration registration) {
-        registrationRepository.save(registration);
+        registrationService.registerUser(registration);
         return ResponseEntity.status(HttpStatus.CREATED).body("User created Successfully");
     }
 }
