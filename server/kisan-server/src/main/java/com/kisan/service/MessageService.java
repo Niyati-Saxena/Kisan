@@ -1,5 +1,8 @@
 package com.kisan.service;
 
+import com.kisan.dto.MessageRequestDTO;
+import com.kisan.dto.MessageResponseDTO;
+import com.kisan.mapper.MessageMapper;
 import com.kisan.model.Message;
 import com.kisan.repository.MessageRepository;
 import org.springframework.stereotype.Service;
@@ -10,17 +13,21 @@ import java.util.List;
 public class MessageService {
 
     private final MessageRepository messageRepository;
+    private final MessageMapper messageMapper;
 
-    public MessageService(MessageRepository messageRepository) {
+    public MessageService(MessageRepository messageRepository, MessageMapper messageMapper) {
         this.messageRepository = messageRepository;
+        this.messageMapper = messageMapper;
     }
 
-    public List<Message> getAllMessages() {
-        return messageRepository.findAll();
+    public List<MessageResponseDTO> getAllMessages() {
+        List<Message> allMessages =  messageRepository.findAll();
+        return messageMapper.toDtoList(allMessages);
     }
 
-    public Message saveMessage(Message message) {
-        return messageRepository.save(message);
+    public MessageResponseDTO saveMessage(MessageRequestDTO request) {
+        Message message = messageRepository.save(messageMapper.toEntity(request));
+        return messageMapper.toDto(message);
     }
 
 }

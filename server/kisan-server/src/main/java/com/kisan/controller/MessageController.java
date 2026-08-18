@@ -1,7 +1,9 @@
 package com.kisan.controller;
 
-import com.kisan.model.Message;
+import com.kisan.dto.MessageRequestDTO;
+import com.kisan.dto.MessageResponseDTO;
 import com.kisan.service.MessageService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +22,14 @@ public class MessageController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Message>> getAll() {
-        List<Message> allMessages = messageService.getAllMessages();
-        return ResponseEntity.status(HttpStatus.OK).body(allMessages);
+    public ResponseEntity<List<MessageResponseDTO>> getAll() {
+        List<MessageResponseDTO> allMessages = messageService.getAllMessages();
+        return ResponseEntity.ok(allMessages);
     }
 
     @PostMapping
-    public ResponseEntity<Message> sendMessage(@RequestBody Message message) {
-        Message newMessage = messageService.saveMessage(message);
+    public ResponseEntity<MessageResponseDTO> sendMessage(@RequestBody @Valid MessageRequestDTO message) {
+        MessageResponseDTO newMessage = messageService.saveMessage(message);
         return ResponseEntity.status(HttpStatus.CREATED).body(newMessage);
     }
 }
