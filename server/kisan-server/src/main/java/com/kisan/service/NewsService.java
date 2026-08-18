@@ -1,5 +1,7 @@
 package com.kisan.service;
 
+import com.kisan.dto.NewsResponseDTO;
+import com.kisan.mapper.NewsMapper;
 import com.kisan.model.News;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
@@ -14,7 +16,13 @@ import java.util.List;
 @Service
 public class NewsService {
 
-    public List<News> getLiveNews() {
+    private final NewsMapper newsMapper;
+
+    public NewsService(NewsMapper newsMapper) {
+        this.newsMapper = newsMapper;
+    }
+
+    public List<NewsResponseDTO> getLiveNews() {
 
         List<News> newsList = new ArrayList<>();
 
@@ -50,6 +58,6 @@ public class NewsService {
             e.printStackTrace();
         }
 
-        return newsList;
+        return newsMapper.toDtoList(newsList);
     }
 }
