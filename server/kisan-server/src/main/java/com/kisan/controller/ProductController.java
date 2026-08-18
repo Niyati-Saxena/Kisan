@@ -1,7 +1,9 @@
 package com.kisan.controller;
 
-import com.kisan.model.Product;
+import com.kisan.dto.ProductRequestDTO;
+import com.kisan.dto.ProductResponseDTO;
 import com.kisan.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,19 +22,18 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAll() {
+    public List<ProductResponseDTO> getAll() {
         return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
-        Product product = productService.getProductById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(product);
+    public ResponseEntity<ProductResponseDTO> getProduct(@PathVariable Long id) {
+        return productService.getProductById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Product> addProduct(@RequestBody Product product) {
-        Product newProduct = productService.saveProduct(product);
+    public ResponseEntity<ProductResponseDTO> addProduct(@RequestBody @Valid ProductRequestDTO product) {
+        ProductResponseDTO newProduct = productService.saveProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
     }
 

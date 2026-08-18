@@ -1,30 +1,39 @@
 package com.kisan.service;
 
+import com.kisan.dto.ProductRequestDTO;
+import com.kisan.dto.ProductResponseDTO;
+import com.kisan.mapper.ProductMapper;
 import com.kisan.model.Product;
 import com.kisan.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
 
-   private ProductRepository productRepository;
+   private final ProductRepository productRepository;
+   private final ProductMapper productMapper;
 
-   public ProductService(ProductRepository productRepository) {
+   public ProductService(ProductRepository productRepository, ProductMapper productMapper) {
        this.productRepository = productRepository;
+       this.productMapper = productMapper;
    }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponseDTO> getAllProducts() {
+        List<Product> allProducts = productRepository.findAll();
+        return productMapper.toDtoList(allProducts);
     }
 
-    public Product getProductById(Long id) {
-        return productRepository.findById(id).orElseThrow(()-> new RuntimeException("Product does not exist"));
+    public Optional<ProductResponseDTO> getProductById(Long id) {
+        Optional<Product> product = productRepository.findById(id);
+        return product.map(productMapper::toDto);
     }
 
-    public Product saveProduct(Product product) {
-        return productRepository.save(product);
+    public ProductResponseDTO saveProduct(ProductRequestDTO request) {
+        Product product =  productRepository.save(productMapper.toEntity(request));
+        return productMapper.toDto(product);
     }
 
     public void deleteProduct(Long id) {

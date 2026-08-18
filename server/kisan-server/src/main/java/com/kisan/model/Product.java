@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.math.BigDecimal;
+
 @Entity
 public class Product {
     @Id
@@ -12,11 +14,8 @@ public class Product {
     private Long id;
     private String name;
     private String category;
-
-    private String price;
-
+    private BigDecimal price;
     private String location;
-
     private String description;
 
     public Long getId() {
@@ -31,7 +30,7 @@ public class Product {
         return category;
     }
 
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
@@ -55,7 +54,7 @@ public class Product {
         this.category = category;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
