@@ -1,8 +1,9 @@
 // src/main/java/com/kisan/controller/RegistrationController.java
 package com.kisan.controller;
 
-import com.kisan.model.Registration;
+import com.kisan.dto.RegistrationRequestDTO;
 import com.kisan.service.RegistrationService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public ResponseEntity<String> registerUser(@RequestBody Registration registration) {
+    public ResponseEntity<String> registerUser(@RequestBody @Valid RegistrationRequestDTO registration) {
         registrationService.registerUser(registration);
         return ResponseEntity.status(HttpStatus.CREATED).body("User created Successfully");
     }
