@@ -1,8 +1,10 @@
 package com.kisan.service;
 
+import com.kisan.dto.CropRequestDTO;
+import com.kisan.dto.CropResponseDTO;
+import com.kisan.mapper.CropMapper;
 import com.kisan.model.Crop;
 import com.kisan.repository.CropRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,18 +13,25 @@ import java.util.Optional;
 @Service
 public class CropService {
 
-    @Autowired
-    private CropRepository cropRepository;
+    private final CropRepository cropRepository;
+    private final CropMapper cropMapper;
 
-    public List<Crop> getAllCrops() {
-        return cropRepository.findAll();
+    public CropService(CropRepository cropRepository, CropMapper cropMapper) {
+        this.cropRepository = cropRepository;
+        this.cropMapper = cropMapper;
     }
 
-    public Optional<Crop> getCropById(Long id) {
-        return cropRepository.findById(id);
+    public List<CropResponseDTO> getAllCrops() {
+        List<Crop> allCrops = cropRepository.findAll();
+        return cropMapper.toDtoList(allCrops);
     }
 
-    public Crop createCrop(Crop crop) {
+    public Optional<CropResponseDTO> getCropById(Long id) {
+        return cropRepository.findById(id).map(cropMapper::toDto);
+    }
+
+    public Crop createCrop(CropRequestDTO request) {
+        Crop crop = cropMapper.toEntity(request);
         return cropRepository.save(crop);
     }
 
