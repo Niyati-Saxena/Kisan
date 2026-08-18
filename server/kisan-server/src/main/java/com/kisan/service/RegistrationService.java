@@ -2,7 +2,6 @@ package com.kisan.service;
 
 import com.kisan.dto.RegistrationRequestDTO;
 import com.kisan.mapper.RegistrationMapper;
-import com.kisan.model.Registration;
 import com.kisan.repository.RegistrationRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +17,9 @@ public class RegistrationService {
     }
 
     public void registerUser(RegistrationRequestDTO registration) {
+        if (registrationRepository.existsByEmail(registration.email())) {
+            throw new RuntimeException("Email already exists");
+        }
         registrationRepository.save(registrationMapper.toEntity(registration));
     }
 }
