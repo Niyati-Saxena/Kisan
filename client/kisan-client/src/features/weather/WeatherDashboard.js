@@ -32,8 +32,8 @@ function WeatherDashboard() {
       {weather && (
         <div className="weather-card">
           <p className="weather-city"><strong>{weather.name}</strong></p>
-          <p>Temperature: {weather.main.temp}°C</p>
-          <p>Condition: {weather.weather[0].description}</p>
+          <p>Temperature: {weather.temperature}°C</p>
+          <p>Condition: {weather.condition}</p>
         </div>
       )}
     </section>
