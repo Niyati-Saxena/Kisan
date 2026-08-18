@@ -1,7 +1,10 @@
 package com.kisan.controller;
 
+import com.kisan.dto.TransporterRequestDTO;
+import com.kisan.dto.TransporterResponseDTO;
 import com.kisan.model.Transporter;
 import com.kisan.service.TransporterService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +23,14 @@ public class TransporterController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Transporter>> getAllTransporters() {
-        List<Transporter> allTransporters = transporterService.getAllTransporters();
+    public ResponseEntity<List<TransporterResponseDTO>> getAllTransporters() {
+        List<TransporterResponseDTO> allTransporters = transporterService.getAllTransporters();
         return ResponseEntity.ok(allTransporters);
     }
 
     @PostMapping
-    public ResponseEntity<Transporter> addTransporter(@RequestBody Transporter transporter) {
-        Transporter newTransporter = transporterService.saveTransporter(transporter);
+    public ResponseEntity<TransporterResponseDTO> addTransporter(@RequestBody @Valid TransporterRequestDTO transporter) {
+        TransporterResponseDTO newTransporter = transporterService.saveTransporter(transporter);
         return ResponseEntity.status(HttpStatus.CREATED).body(newTransporter);
     }
 }

@@ -1,5 +1,8 @@
 package com.kisan.service;
 
+import com.kisan.dto.TransporterRequestDTO;
+import com.kisan.dto.TransporterResponseDTO;
+import com.kisan.mapper.TransporterMapper;
 import com.kisan.model.Transporter;
 import com.kisan.repository.TransporterRepository;
 import org.springframework.stereotype.Service;
@@ -10,16 +13,19 @@ import java.util.List;
 public class TransporterService {
 
     private final TransporterRepository transporterRepository;
+    private final TransporterMapper transporterMapper;
 
-    public TransporterService(TransporterRepository transporterRepository) {
+    public TransporterService(TransporterRepository transporterRepository, TransporterMapper transporterMapper) {
         this.transporterRepository = transporterRepository;
+        this.transporterMapper = transporterMapper;
     }
 
-    public List<Transporter> getAllTransporters() {
-        return transporterRepository.findAll();
+    public List<TransporterResponseDTO> getAllTransporters() {
+        List<Transporter> allTransporters = transporterRepository.findAll();
+        return transporterMapper.toDtoList(allTransporters);
     }
 
-    public Transporter saveTransporter(Transporter transporter) {
-        return transporterRepository.save(transporter);
+    public TransporterResponseDTO saveTransporter(TransporterRequestDTO transporter) {
+        return transporterMapper.toDto(transporterRepository.save(transporterMapper.toEntity(transporter)));
     }
 }
