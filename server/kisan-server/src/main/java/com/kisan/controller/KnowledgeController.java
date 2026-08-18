@@ -1,9 +1,12 @@
 package com.kisan.controller;
 
-import com.kisan.model.Disease;
-import com.kisan.model.Skill;
+import com.kisan.dto.DiseaseRequestDTO;
+import com.kisan.dto.DiseaseResponseDTO;
+import com.kisan.dto.SkillRequestDTO;
+import com.kisan.dto.SkillResponseDTO;
 import com.kisan.service.DiseaseService;
 import com.kisan.service.SkillService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +18,8 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 public class KnowledgeController {
 
-    private DiseaseService diseaseService;
-    private SkillService skillService;
+    private final DiseaseService diseaseService;
+    private final SkillService skillService;
 
     public KnowledgeController(DiseaseService diseaseService , SkillService skillService) {
         this.diseaseService = diseaseService;
@@ -24,26 +27,26 @@ public class KnowledgeController {
     }
 
     @GetMapping("/diseases")
-    public ResponseEntity<List<Disease>> getDiseases() {
-        List<Disease> allDiseases = diseaseService.getAllDiseases();
-        return ResponseEntity.status(HttpStatus.OK).body(allDiseases);
+    public ResponseEntity<List<DiseaseResponseDTO>> getDiseases() {
+        List<DiseaseResponseDTO> allDiseases = diseaseService.getAllDiseases();
+        return ResponseEntity.ok(allDiseases);
     }
 
     @GetMapping("/skills")
-    public ResponseEntity<List<Skill>> getSkills() {
-        List<Skill> allSkills = skillService.getAllSkills();
-        return ResponseEntity.status(HttpStatus.OK).body(allSkills);
+    public ResponseEntity<List<SkillResponseDTO>> getSkills() {
+        List<SkillResponseDTO> allSkills = skillService.getAllSkills();
+        return ResponseEntity.ok(allSkills);
     }
 
     @PostMapping("/diseases")
-    public ResponseEntity<Disease> addDisease(@RequestBody Disease disease) {
-        Disease newDisease = diseaseService.saveDisease(disease);
+    public ResponseEntity<DiseaseResponseDTO> addDisease(@RequestBody @Valid DiseaseRequestDTO disease) {
+        DiseaseResponseDTO newDisease = diseaseService.saveDisease(disease);
         return ResponseEntity.status(HttpStatus.CREATED).body(newDisease);
     }
 
     @PostMapping("/skills")
-    public ResponseEntity<Skill> addSkill(@RequestBody Skill skill) {
-        Skill newSkill = skillService.saveSkill(skill);
+    public ResponseEntity<SkillResponseDTO> addSkill(@RequestBody @Valid SkillRequestDTO skill) {
+        SkillResponseDTO newSkill = skillService.saveSkill(skill);
         return ResponseEntity.status(HttpStatus.CREATED).body(newSkill);
     }
 }

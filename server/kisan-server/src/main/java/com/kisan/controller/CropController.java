@@ -35,8 +35,8 @@ public class CropController {
     }
 
     @PostMapping
-    public ResponseEntity<Crop> addCrop(@RequestBody @Valid CropRequestDTO request) {
-        Crop newCrop = cropService.createCrop(request);
+    public ResponseEntity<CropResponseDTO> addCrop(@RequestBody @Valid CropRequestDTO request) {
+        CropResponseDTO newCrop = cropService.createCrop(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(newCrop);
     }
 }

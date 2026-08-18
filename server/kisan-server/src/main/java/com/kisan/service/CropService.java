@@ -30,9 +30,9 @@ public class CropService {
         return cropRepository.findById(id).map(cropMapper::toDto);
     }
 
-    public Crop createCrop(CropRequestDTO request) {
+    public CropResponseDTO createCrop(CropRequestDTO request) {
         Crop crop = cropMapper.toEntity(request);
-        return cropRepository.save(crop);
+        return cropMapper.toDto(cropRepository.save(crop));
     }
 
 
