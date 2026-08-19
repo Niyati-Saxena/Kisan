@@ -2,13 +2,13 @@ package com.kisan.service;
 
 import com.kisan.dto.ProductRequestDTO;
 import com.kisan.dto.ProductResponseDTO;
+import com.kisan.exception.ResourceNotFoundException;
 import com.kisan.mapper.ProductMapper;
 import com.kisan.model.Product;
 import com.kisan.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -26,9 +26,9 @@ public class ProductService {
         return productMapper.toDtoList(allProducts);
     }
 
-    public Optional<ProductResponseDTO> getProductById(Long id) {
-        Optional<Product> product = productRepository.findById(id);
-        return product.map(productMapper::toDto);
+    public ProductResponseDTO getProductById(Long id) {
+        Product product = productRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Product does not exist."));
+        return productMapper.toDto(product);
     }
 
     public ProductResponseDTO saveProduct(ProductRequestDTO request) {
@@ -37,7 +37,7 @@ public class ProductService {
     }
 
     public void deleteProduct(Long id) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         productRepository.delete(product);
     }
 }

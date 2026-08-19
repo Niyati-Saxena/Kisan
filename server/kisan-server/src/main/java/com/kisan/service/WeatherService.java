@@ -1,10 +1,12 @@
 package com.kisan.service;
 import com.kisan.dto.WeatherApiResponseDTO;
 import com.kisan.dto.WeatherResponseDTO;
+import com.kisan.exception.ExternalServiceException;
 import com.kisan.mapper.WeatherMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClientException;
 
 @Service
 public class WeatherService {
@@ -24,7 +26,11 @@ public class WeatherService {
     public WeatherResponseDTO getWeatherByCity(String city) {
         String url = apiUrl + "?q=" + city + "&appid=" + apiKey + "&units=metric";
         RestTemplate restTemplate = new RestTemplate();
-        WeatherApiResponseDTO response = restTemplate.getForObject(url, WeatherApiResponseDTO.class);
-        return weatherMapper.toDto(response);
+        try {
+            WeatherApiResponseDTO response = restTemplate.getForObject(url, WeatherApiResponseDTO.class);
+            return weatherMapper.toDto(response);
+        } catch (RestClientException e) {
+            throw new ExternalServiceException("Weather service is unavailable" , e);
+        }
     }
 }

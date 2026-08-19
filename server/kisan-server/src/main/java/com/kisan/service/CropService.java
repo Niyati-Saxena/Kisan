@@ -2,13 +2,13 @@ package com.kisan.service;
 
 import com.kisan.dto.CropRequestDTO;
 import com.kisan.dto.CropResponseDTO;
+import com.kisan.exception.ResourceNotFoundException;
 import com.kisan.mapper.CropMapper;
 import com.kisan.model.Crop;
 import com.kisan.repository.CropRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CropService {
@@ -26,8 +26,9 @@ public class CropService {
         return cropMapper.toDtoList(allCrops);
     }
 
-    public Optional<CropResponseDTO> getCropById(Long id) {
-        return cropRepository.findById(id).map(cropMapper::toDto);
+    public CropResponseDTO getCropById(Long id) {
+        Crop crop = cropRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Crop does not exist."));
+        return cropMapper.toDto(crop);
     }
 
     public CropResponseDTO createCrop(CropRequestDTO request) {

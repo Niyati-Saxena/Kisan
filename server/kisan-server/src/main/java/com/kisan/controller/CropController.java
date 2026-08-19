@@ -2,7 +2,6 @@ package com.kisan.controller;
 
 import com.kisan.dto.CropRequestDTO;
 import com.kisan.dto.CropResponseDTO;
-import com.kisan.model.Crop;
 import com.kisan.service.CropService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -29,9 +28,8 @@ public class CropController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CropResponseDTO> getCropById(@PathVariable Long id) {
-        return cropService.getCropById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        CropResponseDTO crop = cropService.getCropById(id);
+        return ResponseEntity.ok(crop);
     }
 
     @PostMapping
