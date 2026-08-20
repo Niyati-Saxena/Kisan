@@ -1,9 +1,6 @@
 package com.kisan.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 
@@ -14,6 +11,7 @@ public class Product {
     private Long id;
     private String name;
     private String category;
+    @Column(precision = 10, scale =2)
     private BigDecimal price;
     private String location;
     private String description;

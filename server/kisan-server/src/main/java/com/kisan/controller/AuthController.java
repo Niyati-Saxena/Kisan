@@ -1,8 +1,8 @@
 // src/main/java/com/kisan/controller/RegistrationController.java
 package com.kisan.controller;
 
-import com.kisan.dto.RegistrationRequestDTO;
-import com.kisan.service.RegistrationService;
+import com.kisan.dto.UserRequestDTO;
+import com.kisan.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/register")
 @CrossOrigin(origins = "*") // Allow frontend access
-public class RegistrationController {
+public class AuthController {
 
-    private final RegistrationService registrationService;
+    private final AuthService authService;
 
-    public RegistrationController(RegistrationService registrationService) {
-        this.registrationService = registrationService;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
     @PostMapping
-    public ResponseEntity<String> registerUser(@RequestBody @Valid RegistrationRequestDTO registration) {
-        registrationService.registerUser(registration);
+    public ResponseEntity<String> registerUser(@RequestBody @Valid UserRequestDTO request) {
+        authService.registerUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body("Registered successfully");
     }
 }

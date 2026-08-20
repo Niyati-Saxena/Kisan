@@ -66,6 +66,12 @@ public class GlobalExceptionHandler  {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
       }
 
+    @ExceptionHandler(InvalidRoleException.class)
+    public ResponseEntity<ErrorResponseDTO> handleInvalidRoleException(InvalidRoleException e) {
+        ErrorResponseDTO error = buildError(HttpStatus.BAD_REQUEST, e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
       // helper method for repeated error response
       private ErrorResponseDTO buildError(HttpStatus status , String message) {
         return  new ErrorResponseDTO(
