@@ -27,7 +27,10 @@ public class SecurityConfig {
                         // =========================
                         // PUBLIC AUTHENTICATION
                         // =========================
-                        .requestMatchers("/api/register").permitAll()
+                        .requestMatchers(
+                                "/api/register",
+                                "/api/login"
+                        ).permitAll()
 
                         // =========================
                         // PUBLIC MARKETPLACE

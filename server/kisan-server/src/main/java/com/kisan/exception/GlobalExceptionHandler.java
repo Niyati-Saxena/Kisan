@@ -59,17 +59,22 @@ public class GlobalExceptionHandler  {
                 .body(error);
     }
 
-
-    @ExceptionHandler(Exception.class)
-      public ResponseEntity<ErrorResponseDTO> handleGenericException(Exception e) {
-        ErrorResponseDTO error = buildError(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-      }
-
     @ExceptionHandler(InvalidRoleException.class)
     public ResponseEntity<ErrorResponseDTO> handleInvalidRoleException(InvalidRoleException e) {
         ErrorResponseDTO error = buildError(HttpStatus.BAD_REQUEST, e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(InvalidCredentailsException.class)
+    public ResponseEntity<ErrorResponseDTO> handleInvalidCredentialsException(InvalidCredentailsException e) {
+        ErrorResponseDTO error = buildError(HttpStatus.UNAUTHORIZED , e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDTO> handleGenericException(Exception e) {
+        ErrorResponseDTO error = buildError(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 
       // helper method for repeated error response

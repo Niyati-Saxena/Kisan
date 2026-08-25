@@ -1,7 +1,11 @@
 package com.kisan.service;
 
+import com.kisan.dto.LoginRequestDTO;
+import com.kisan.dto.LoginResponseDTO;
 import com.kisan.dto.UserRequestDTO;
+import com.kisan.dto.UserResponseDTO;
 import com.kisan.exception.DuplicateEmailException;
+import com.kisan.exception.InvalidCredentailsException;
 import com.kisan.exception.InvalidRoleException;
 import com.kisan.mapper.UserMapper;
 import com.kisan.model.User;
@@ -48,5 +52,25 @@ public class AuthService {
         if (role == Role.ADMIN) {
             throw new InvalidRoleException("Admin registration is not allowed");
         }
+    }
+
+    public LoginResponseDTO loginUser(LoginRequestDTO loginReques) {
+        // finding the user by email
+        User user = userRepository.findByEmail(loginReques.email())
+                .orElseThrow(() -> new InvalidCredentailsException("Invlaid email or password"));
+
+        // verifying the BCrypt password
+        if (!passwordEncoder.matches(loginReques.password() , user.getPassword())) {
+            throw new InvalidCredentailsException("Invalid email or password");
+        }
+
+        // return user info for valid users
+        return new LoginResponseDTO(
+                null,
+                "Bearer",
+                user.getId(),
+                user.getName(),
+                user.getRole()
+        );
     }
 }
