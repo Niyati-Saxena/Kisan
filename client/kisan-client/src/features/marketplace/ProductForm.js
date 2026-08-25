@@ -11,14 +11,30 @@ function ProductForm({ onAdd }) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    axios.post('/api/products', form)
-      .then(res => {
-        onAdd(res.data);
-        setForm({ name: '', category: '', price: '', location: '', description: '' });
-      });
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await axios.post('/api/products', form);
+
+    onAdd(response.data);
+
+    setForm({
+      name: '',
+      category: '',
+      price: '',
+      location: '',
+      description: ''
+    });
+
+  } catch (error) {
+    if (error.response?.status === 403) {
+      alert('You must be logged in as a vendor to add a product.');
+    } else {
+      alert('Failed to add product. Please try again.');
+    }
+  }
+};
 
   return (
     <form onSubmit={handleSubmit} className='product-form'>
