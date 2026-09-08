@@ -16,12 +16,14 @@ import NotFound from './pages/NotFound';
 import Login from './pages/Login';
 import CropList from './features/crop/CropList';
 import Register from './components/Register';
+import { AuthProvider } from './auth/AuthContext';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 function App() {
   return (
+    <AuthProvider>
     <Router>
 
       <NavBar />
@@ -109,6 +111,7 @@ function App() {
       <Footer />
 
     </Router>
+    </AuthProvider>
   );
 }
 

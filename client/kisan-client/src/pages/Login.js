@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useAuth } from '../auth/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
+  const { login } = useAuth();
+
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -36,12 +39,7 @@ function Login() {
 
       console.log('Login successful:', response.data);
 
-      // Temporary storage.
-      // We will replace this with AuthContext later.
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('userId', response.data.userId);
-      localStorage.setItem('name', response.data.name);
-      localStorage.setItem('role', response.data.role);
+      login(response.data);
 
       navigate('/');
 
