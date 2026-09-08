@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.util.Base64;
 import java.util.Date;
 
 @Service
@@ -20,7 +21,7 @@ public class JwtService {
             @Value("${jwt.expiration}") long expiration
     ) {
         this.secretKey = Keys.hmacShaKeyFor(
-                java.util.Base64.getDecoder().decode(secret)
+                Base64.getDecoder().decode(secret)
         );
 
         this.expiration = expiration;
@@ -37,5 +38,35 @@ public class JwtService {
                 .expiration(expiryDate)
                 .signWith(secretKey)
                 .compact();
+    }
+
+    public String extractEmail(String token) {
+
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }
+
+    public boolean isTokenValid(String token, User user) {
+
+        String email = extractEmail(token);
+
+        return email.equals(user.getEmail())
+                && !isTokenExpired(token);
+    }
+
+    private boolean isTokenExpired(String token) {
+
+        Date expirationDate = Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getExpiration();
+
+        return expirationDate.before(new Date());
     }
 }
