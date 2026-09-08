@@ -77,6 +77,15 @@ function NavBar() {
             </li>
 
             <li>
+  <NavLink
+    to="/crops"
+    onClick={closeMobileNav}
+  >
+    Crops
+  </NavLink>
+</li>
+
+            <li>
               <NavLink
                 to="/contact"
                 onClick={closeMobileNav}
