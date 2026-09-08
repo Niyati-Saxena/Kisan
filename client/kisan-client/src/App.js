@@ -12,6 +12,8 @@ import WeatherDashboard from './features/weather/WeatherDashboard';
 import NewsFeed from './features/news/NewsFeed';
 import KnowledgePage from './features/knowledge/KnowledgePage';
 import About from './pages/About';
+import NotFound from './pages/NotFound';
+import Login from './pages/Login';
 import CropList from './features/crop/CropList';
 import Register from './components/Register';
 
@@ -85,9 +87,19 @@ function App() {
               AUTHENTICATION
           ========================= */}
 
+            <Route
+  path="/login"
+  element={<Login />}
+/>
+
           <Route
             path="/register"
             element={<Register />}
+          />
+
+          <Route
+            path="*"
+            element={<NotFound />}
           />
 
         </Routes>

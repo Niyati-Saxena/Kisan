@@ -77,15 +77,6 @@ function NavBar() {
             </li>
 
             <li>
-  <NavLink
-    to="/crops"
-    onClick={closeMobileNav}
-  >
-    Crops
-  </NavLink>
-</li>
-
-            <li>
               <NavLink
                 to="/contact"
                 onClick={closeMobileNav}
@@ -103,18 +94,10 @@ function NavBar() {
               </NavLink>
             </li>
 
+
             {/* =========================
                 AUTHENTICATION LINKS
             ========================= */}
-
-            <li>
-              <NavLink
-                to="/register"
-                onClick={closeMobileNav}
-              >
-                Register
-              </NavLink>
-            </li>
 
             <li>
               <NavLink
@@ -122,6 +105,15 @@ function NavBar() {
                 onClick={closeMobileNav}
               >
                 Login
+              </NavLink>
+            </li>
+
+            <li>
+              <NavLink
+                to="/register"
+                onClick={closeMobileNav}
+              >
+                Register
               </NavLink>
             </li>
 

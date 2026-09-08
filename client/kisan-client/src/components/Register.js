@@ -2,7 +2,7 @@ import '../stylesheets/Register.css';
 import { useState } from 'react';
 import axios from 'axios';
 
-export default function RegisterSection() {
+export default function Register() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
