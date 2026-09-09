@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../../services/axiosConfig';
 import '../../stylesheets/Contact.css'; 
 
 function ContactForm() {
@@ -11,7 +11,7 @@ function ContactForm() {
 
   const handleSubmit = e => {
     e.preventDefault();
-    axios.post('/api/messages', form)
+    api.post('/messages', form)
       .then(() => {
         alert("Message sent!");
         setForm({ name: '', email: '', message: '' });

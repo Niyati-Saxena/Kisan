@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../../services/axiosConfig';
 
 function TransportationList() {
   const [transporters, setTransporters] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/transporters')
+    api.get('/transporters')
       .then(res => setTransporters(res.data))
       .catch(err => console.error("Transport fetch error:", err));
   }, []);

@@ -1,7 +1,5 @@
-import axios from 'axios';
+import api from '../../services/axiosConfig';
 
-const BASE_URL = '/api/products';
+export const getProducts = () => api.get('/products');
 
-export const getProducts = () => axios.get(BASE_URL);
-
-export const addProduct = product => axios.post(BASE_URL, product);
+export const addProduct = product => api.post('/products', product);

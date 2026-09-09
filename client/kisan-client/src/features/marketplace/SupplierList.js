@@ -1,12 +1,12 @@
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../../services/axiosConfig';
 
 function SupplierList() {
   const [suppliers, setSuppliers] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/suppliers')
+    api.get('/suppliers')
       .then(res => setSuppliers(res.data))
       .catch(err => console.error("Supplier fetch error:", err));
   }, []);

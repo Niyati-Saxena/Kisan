@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import api from '../services/axiosConfig';
 import { useAuth } from '../auth/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,7 +32,7 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await axios.post(
+      const response = await api.post(
         'http://localhost:8081/api/login',
         formData
       );

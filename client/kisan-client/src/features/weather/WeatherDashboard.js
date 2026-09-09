@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import api from '../../services/axiosConfig';
 import '../../stylesheets/WeatherDshboard.css';
 
 function WeatherDashboard() {
@@ -7,7 +7,7 @@ function WeatherDashboard() {
   const [weather, setWeather] = useState(null);
 
   const fetchWeather = () => {
-    axios.get(`/api/weather/${city}`)
+    api.get(`/weather/${city}`)
       .then(res => setWeather(res.data))
       .catch(err => console.error("Weather fetch error:", err));
   };

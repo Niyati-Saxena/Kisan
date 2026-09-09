@@ -1,6 +1,4 @@
-import axios from 'axios';
+import api from '../../services/axiosConfig';
 
-const BASE_URL = '/api/knowledge';
-
-export const getDiseases = () => axios.get(`${BASE_URL}/diseases`);
-export const getSkills = () => axios.get(`${BASE_URL}/skills`);
+export const getDiseases = () => api.get('/knowledge/diseases');
+export const getSkills = () => api.get('/knowledge/skills');

@@ -1,6 +1,6 @@
 import '../stylesheets/Register.css';
 import { useState } from 'react';
-import axios from 'axios';
+import api from '../services/axiosConfig';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -48,7 +48,7 @@ export default function Register() {
     };
 
     try {
-      const response = await axios.post(
+      const response = await api.post(
         'http://localhost:8081/api/register',
         registrationData
       );

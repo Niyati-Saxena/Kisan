@@ -1,4 +1,3 @@
-import axios from 'axios';
-const BASE_URL = '/api/news';
+import api from '../../services/axiosConfig';
 
-export const getNews = () => axios.get(BASE_URL);
+export const getNews = () => api.get('/news');
