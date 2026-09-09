@@ -11,6 +11,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
+
 @Configuration
 public class SecurityConfig {
 
@@ -31,6 +37,10 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
 
+                .cors(cors ->
+                        cors.configurationSource(corsConfigurationSource())
+                )
+
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(
                                 SessionCreationPolicy.STATELESS
@@ -39,41 +49,51 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
+                        // CORS preflight
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // Authentication
                         .requestMatchers(
                                 "/api/register",
                                 "/api/login"
                         ).permitAll()
 
+                        // Public products
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/products",
                                 "/api/products/**"
                         ).permitAll()
 
+                        // Public suppliers
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/suppliers",
                                 "/api/suppliers/**"
                         ).permitAll()
 
+                        // Public transporters
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/transporters",
                                 "/api/transporters/**"
                         ).permitAll()
 
+                        // Public news
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/news",
                                 "/api/news/**"
                         ).permitAll()
 
+                        // Public knowledge
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/knowledge/diseases",
                                 "/api/knowledge/skills"
                         ).permitAll()
 
+                        // Contact
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/api/messages"
@@ -88,5 +108,35 @@ public class SecurityConfig {
                 );
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowedOrigins(
+                List.of("http://localhost:3000")
+        );
+
+        configuration.setAllowedMethods(
+                List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        );
+
+        configuration.setAllowedHeaders(
+                List.of("*")
+        );
+
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
+
+        source.registerCorsConfiguration(
+                "/**",
+                configuration
+        );
+
+        return source;
     }
 }

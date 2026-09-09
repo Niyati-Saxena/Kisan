@@ -16,6 +16,10 @@ public class Product {
     private String location;
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "vendor_id")
+    private User vendor;
+
     public Long getId() {
         return id;
     }
@@ -62,5 +66,13 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public User getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(User vendor) {
+        this.vendor = vendor;
     }
 }
