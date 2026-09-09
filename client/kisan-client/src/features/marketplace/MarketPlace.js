@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../auth/AuthContext';
-import { getProducts } from './ProductService';
+import { getProducts, updateProduct, deleteProduct } from './ProductService';
 import '../../stylesheets/MarketPlace.css';
 import SupplierList from './SupplierList';
 import TransportationList from './TransportationList';
@@ -14,6 +14,8 @@ function Marketplace() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showProductForm, setShowProductForm] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
+
 
    const { user } = useAuth();
 
@@ -56,6 +58,36 @@ function Marketplace() {
 
       return 0;
     });
+
+    const handleDelete = async (id) => {
+  try {
+    await deleteProduct(id);
+
+    setProducts(prevProducts =>
+      prevProducts.filter(product => product.id !== id)
+    );
+  } catch (error) {
+    console.error('Failed to delete product:', error);
+    alert('Failed to delete product. Please try again.');
+  }
+};
+
+const handleUpdate = async (id, updatedProduct) => {
+  try {
+    const response = await updateProduct(id, updatedProduct);
+
+    setProducts(prevProducts =>
+      prevProducts.map(product =>
+        product.id === id ? response.data : product
+      )
+    );
+
+    setEditingProduct(null);
+  } catch (error) {
+    console.error('Failed to update product:', error);
+    alert('Failed to update product. Please try again.');
+  }
+};
 
   return (
     <section id="marketplace" className="marketplace section">
@@ -181,20 +213,31 @@ function Marketplace() {
                 className="col-md-6 col-lg-4"
               >
                 <div className="product-card">
+  <div className="product-header">
+    <strong>{p.name}</strong> — ₹{p.price}
+  </div>
 
-                  <div className="product-header">
-                    <strong>{p.name}</strong> — ₹{p.price}
-                  </div>
+  <div className="product-meta">
+    <span>{p.category}</span>
+    {' | '}
+    <span>{p.location}</span>
+  </div>
 
-                  <div className="product-meta">
-                    <span>{p.category}</span>
-                    {' | '}
-                    <span>{p.location}</span>
-                  </div>
+  <p>{p.description}</p>
 
-                  <p>{p.description}</p>
+  {role === 'VENDOR' &&
+    Number(p.vendorId) === Number(user.userId) && (
+      <div>
+        <button onClick={() => setEditingProduct(p)}>
+          Edit
+        </button>
 
-                </div>
+        <button onClick={() => handleDelete(p.id)}>
+          Delete
+        </button>
+      </div>
+    )}
+</div>
               </div>
             ))}
 
