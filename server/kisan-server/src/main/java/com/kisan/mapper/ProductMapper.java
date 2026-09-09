@@ -21,8 +21,16 @@ public class ProductMapper {
         return product;
     }
 
-    public ProductResponseDTO toDto(Product request) {
-        return new ProductResponseDTO(request.getName() , request.getCategory(), request.getPrice(), request.getLocation(), request.getDescription());
+    public ProductResponseDTO toDto(Product product) {
+        return new ProductResponseDTO(
+                product.getId(),
+                product.getName(),
+                product.getCategory(),
+                product.getPrice(),
+                product.getLocation(),
+                product.getDescription(),
+                product.getVendor() != null ? product.getVendor().getId() : null
+        );
     }
 
     public List<ProductResponseDTO> toDtoList(List<Product> request) {
