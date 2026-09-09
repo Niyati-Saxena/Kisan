@@ -5,7 +5,10 @@ import com.kisan.dto.ProductResponseDTO;
 import com.kisan.exception.ResourceNotFoundException;
 import com.kisan.mapper.ProductMapper;
 import com.kisan.model.Product;
+import com.kisan.model.User;
 import com.kisan.repository.ProductRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,8 +35,19 @@ public class ProductService {
     }
 
     public ProductResponseDTO saveProduct(ProductRequestDTO request) {
-        Product product =  productRepository.save(productMapper.toEntity(request));
-        return productMapper.toDto(product);
+
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        User vendor = (User) authentication.getPrincipal();
+
+        Product product = productMapper.toEntity(request);
+
+        product.setVendor(vendor);
+
+        Product savedProduct = productRepository.save(product);
+
+        return productMapper.toDto(savedProduct);
     }
 
     public void deleteProduct(Long id) {
