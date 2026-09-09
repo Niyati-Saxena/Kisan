@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useAuth } from '../../auth/AuthContext';
 import { getProducts } from './ProductService';
 import '../../stylesheets/MarketPlace.css';
 import SupplierList from './SupplierList';
 import TransportationList from './TransportationList';
+import ProductForm from './ProductForm';
 
 function Marketplace() {
   const [products, setProducts] = useState([]);
@@ -11,6 +13,11 @@ function Marketplace() {
   const [sort, setSort] = useState('price');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showProductForm, setShowProductForm] = useState(false);
+
+   const { user } = useAuth();
+
+  const role = user?.role;
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -117,6 +124,27 @@ function Marketplace() {
 
         </div>
 
+
+{role === 'VENDOR' && (
+  <>
+    <button onClick={() => setShowProductForm(!showProductForm)}>
+      {showProductForm ? 'Cancel' : 'Add Product'}
+    </button>
+
+    {showProductForm && (
+      <ProductForm
+        onAdd={(newProduct) => {
+          setProducts(prevProducts => [
+            ...prevProducts,
+            newProduct
+          ]);
+
+          setShowProductForm(false);
+        }}
+      />
+    )}
+  </>
+)}
 
         {/* =========================
             PRODUCTS

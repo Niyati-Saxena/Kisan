@@ -6,7 +6,7 @@ function SupplierList() {
   const [suppliers, setSuppliers] = useState([]);
 
   useEffect(() => {
-    api.get('/suppliers')
+    api.get('suppliers')
       .then(res => setSuppliers(res.data))
       .catch(err => console.error("Supplier fetch error:", err));
   }, []);
