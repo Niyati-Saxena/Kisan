@@ -159,24 +159,47 @@ const handleUpdate = async (id, updatedProduct) => {
 
 {role === 'VENDOR' && (
   <>
-    <button onClick={() => setShowProductForm(!showProductForm)}>
-      {showProductForm ? 'Cancel' : 'Add Product'}
-    </button>
+    {!editingProduct && (
+      <>
+        <button onClick={() => setShowProductForm(!showProductForm)}>
+          {showProductForm ? 'Cancel' : 'Add Product'}
+        </button>
 
-    {showProductForm && (
+        {showProductForm && (
+          <ProductForm
+            onAdd={(newProduct) => {
+              setProducts(prevProducts => [
+                ...prevProducts,
+                newProduct
+              ]);
+
+              setShowProductForm(false);
+            }}
+          />
+        )}
+      </>
+    )}
+
+    {editingProduct && (
       <ProductForm
-        onAdd={(newProduct) => {
-          setProducts(prevProducts => [
-            ...prevProducts,
-            newProduct
-          ]);
+        productToEdit={editingProduct}
+        onUpdate={(updatedProduct) => {
+          setProducts(prevProducts =>
+            prevProducts.map(product =>
+              product.id === updatedProduct.id
+                ? updatedProduct
+                : product
+            )
+          );
 
-          setShowProductForm(false);
+          setEditingProduct(null);
         }}
+        onCancel={() => setEditingProduct(null)}
       />
     )}
   </>
 )}
+
 
         {/* =========================
             PRODUCTS

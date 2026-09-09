@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import api from '../../services/axiosConfig';
 import { useAuth } from '../../auth/AuthContext';
 
-function ProductForm({ onAdd }) {
+function ProductForm({ onAdd, productToEdit, onUpdate, onCancel }) {
 
   const { user } = useAuth();
   const role = user?.role;
@@ -15,14 +15,34 @@ function ProductForm({ onAdd }) {
     description: ''
   });
 
+  useEffect(() => {
+  if (productToEdit) {
+    setForm({
+      name: productToEdit.name,
+      category: productToEdit.category,
+      price: productToEdit.price,
+      location: productToEdit.location,
+      description: productToEdit.description
+    });
+  }
+}, [productToEdit]);
+
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
+  try {
+    if (productToEdit) {
+      const response = await api.put(
+        `/products/${productToEdit.id}`,
+        form
+      );
+
+      onUpdate(response.data);
+    } else {
       const response = await api.post('/products', form);
 
       onAdd(response.data);
@@ -34,15 +54,20 @@ function ProductForm({ onAdd }) {
         location: '',
         description: ''
       });
-
-    } catch (error) {
-      if (error.response?.status === 403) {
-        alert('You must be logged in as a vendor to add a product.');
-      } else {
-        alert('Failed to add product. Please try again.');
-      }
     }
-  };
+
+  } catch (error) {
+    if (error.response?.status === 403) {
+      alert('You must be logged in as a vendor.');
+    } else {
+      alert(
+        productToEdit
+          ? 'Failed to update product. Please try again.'
+          : 'Failed to add product. Please try again.'
+      );
+    }
+  }
+};
 
   if (role !== 'VENDOR') {
     return null;
@@ -86,7 +111,15 @@ function ProductForm({ onAdd }) {
         onChange={handleChange}
       />
 
-      <button type="submit">Add Product</button>
+      <button type="submit">
+  {productToEdit ? 'Update Product' : 'Add Product'}
+</button>
+
+{productToEdit && (
+  <button type="button" onClick={onCancel}>
+    Cancel
+  </button>
+)}
 
     </form>
   );
