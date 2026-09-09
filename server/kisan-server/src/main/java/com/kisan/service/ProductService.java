@@ -53,6 +53,32 @@ public class ProductService {
         return productMapper.toDto(savedProduct);
     }
 
+    public ProductResponseDTO updateProduct(Long id, ProductRequestDTO request) {
+
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        User vendor = (User) authentication.getPrincipal();
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Product not found"));
+
+        if (!product.getVendor().getId().equals(vendor.getId())) {
+            throw new RuntimeException("You can update only your own products.");
+        }
+
+        product.setName(request.name());
+        product.setCategory(request.category());
+        product.setPrice(request.price());
+        product.setLocation(request.location());
+        product.setDescription(request.description());
+
+        Product updatedProduct = productRepository.save(product);
+
+        return productMapper.toDto(updatedProduct);
+    }
+
     public void deleteProduct(Long id) {
 
         Authentication authentication =
