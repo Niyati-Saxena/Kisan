@@ -86,6 +86,7 @@ function NavBar() {
                 <li>
                   <button
                     type="button"
+                    className="logout-btn"
                     onClick={handleLogout}
                   >
                     Logout
