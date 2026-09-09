@@ -65,6 +65,25 @@ public class SecurityConfig {
                                 "/api/products/**"
                         ).permitAll()
 
+                        // Vendor-only product operations
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/products",
+                                "/api/products/**"
+                        ).hasRole("VENDOR")
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/products",
+                                "/api/products/**"
+                        ).hasRole("VENDOR")
+
+                        .requestMatchers(
+                                HttpMethod.DELETE,
+                                "/api/products",
+                                "/api/products/**"
+                        ).hasRole("VENDOR")
+
                         // Public suppliers
                         .requestMatchers(
                                 HttpMethod.GET,
