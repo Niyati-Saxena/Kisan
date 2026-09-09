@@ -10,6 +10,9 @@ import com.kisan.repository.ProductRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import com.kisan.model.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -51,7 +54,20 @@ public class ProductService {
     }
 
     public void deleteProduct(Long id) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        User vendor = (User) authentication.getPrincipal();
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Product not found"));
+
+        if (!product.getVendor().getId().equals(vendor.getId())) {
+            throw new RuntimeException("You can delete only your own products.");
+        }
+
         productRepository.delete(product);
     }
 }
